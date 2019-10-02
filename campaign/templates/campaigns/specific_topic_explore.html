@@ -1,0 +1,56 @@
+{% extends 'base_home.html' %}
+
+{% block content %}
+<h2>
+    {{topic.name}}
+</h2>
+<p>
+    tinder card in website form: ~manga pages
+</p>
+
+<br>
+
+
+<h2>Explore the matter:</h2>
+
+
+<div>
+
+ {% for post in topic.topic_explore_posts.all %}
+    <p>
+    <div class="card">
+<!--     <div class="author_chip">
+ --><!--   <img src="img_avatar.png" alt="Person" width="96" height="96">
+ -->  <a href="{% url 'users:user_profile' username=post.user.username %}">{{post.user.username}}<br/>{{post.user.user_membership.member_type}}<br/>{{post.user.usermembership_set.get_member_type_display}}
+ {{post.user.user_membership.get_member_type_display}}derb</a>
+
+<!-- </div> -->
+    <p>
+        {{ post.content }}<br/>
+
+    <span style="z-index: 0">
+            <button type="button" class="trans_block_btn" style="float: left; display: inline-block; 
+            background-color:red;">
+            Unlike</button>
+            <button type="button" class="trans_block_btn" style="float: right; display: inline-block; background-color:#4CAF50">Like</button>
+    </span>
+    </p>
+
+    
+
+    </div>
+</p>
+
+{% endfor %}
+</div>
+
+<div class="add-explore-post-form">
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            <p>Add explore post here:</p>
+            {{ form_explore_post.as_p }}
+            <button type="submit" class="save btn btn-default btn-sm">Add Explore Post</button>
+        </form>
+</div>
+
+{% endblock %}

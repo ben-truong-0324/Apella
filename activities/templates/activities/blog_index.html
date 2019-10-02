@@ -1,0 +1,31 @@
+{% extends 'base_home.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<p>
+    Hi {{ user.username }}!
+</p>
+{% endif %}
+
+{% if user.is_admin %}
+Create a blog if you'd like!
+<a href="{% url 'activities:create_blog' %}">Create new blog</a>
+{% endif %}
+<br>
+{% for b in blogs %}
+<div class="outcome_columns">
+    <ul class="outcome">
+        <li>
+            <a href="{{ b.get_absolute_url }}">{{ b.name }}</a>
+        </li>
+        <li>Author: {{ b.author }}</li>
+        <li>
+            {{ b.created_on|date }}
+        </li>
+        <li>
+            {{ b.content }}
+        </li>
+    </ul>
+</div>
+
+{% endfor %}
+{% endblock %}

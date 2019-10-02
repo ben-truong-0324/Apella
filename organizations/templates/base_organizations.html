@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+    <title>LiberDeX</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'organizations/style_organizations.css' %}">
+</head>
+
+<body>
+    <div class="sidenav">
+        <div id="sidenav-left">
+            <a href="{% url 'home:about' %}"><i class="fa fa-globe"></i> About</a>
+            <a href="{% url 'home:contact' %}"><i class="fa fa-envelope"></i> Contact</a>
+           
+            <a href="//facebook.com" class="facebook"><i class="fa fa-facebook"></i></a>
+            <a href="//twitter.com" class="twitter"><i class="fa fa-twitter"></i></a>
+            <a href="//google.com" class="google"><i class="fa fa-google"></i></a>
+            <a href="//linkedin.com" class="linkedin"><i class="fa fa-linkedin"></i></a>
+            <a href="//youtube.com" class="youtube"><i class="fa fa-youtube"></i></a>
+        </div>
+        <div class="progress-container" , id="sidenav-right">
+            <div class="progress-bar" id="myBar"></div>
+        </div>
+    </div>
+    <div class="main">
+        <div id="headingbar">
+            <div id="logo">
+                <a href="{% url 'home:index' %}">LiberDeX</a>
+            </div>
+            <a {% if request.resolver_match.url_name == 'home.index' %}class="active" {% endif %} href="{% url 'home:index' %}"><i class="fa fa-home"></i>Home</a>
+            <div id="headingbar-right" style="float:right">
+                <a {% if request.resolver_match.url_name == 'users.index' %}class="active" {% endif %} href="{% url 'users:index' %}">My dX</a>
+
+                {% block headingbar-right %}
+                {% endblock %}
+               
+            </div>
+        </div>
+        <!-- <div style="margin-top:120px">
+            <img src="{% static 'images/civicdx.jpeg' %}" alt="Trulli" width="500" height="333">
+        </div> -->
+        {% autoescape off %}
+        {% block content %}
+        {% endblock %}
+        {% endautoescape %}
+        
+    </div>
+    {% autoescape off %}
+    {% block derb %}
+    {% endblock %}
+    {% endautoescape %}
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <div class="footer">
+        <p>Copyright &copy 2019 Ben Truong</p>
+    </div>
+</body>
+
+</html>
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() { scrollFunction(), ProgressBarFunction() };
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+// When the user clicks on the button, scroll to the togglep of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+// When the user scrolls the page, execute myFunction 
+function ProgressBarFunction() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById("myBar").style.height = scrolled + "%";
+}
+</script>

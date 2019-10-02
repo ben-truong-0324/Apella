@@ -1,0 +1,47 @@
+{% extends 'base_home.html' %}
+
+{% block content %}
+<h2>
+    {{profile.user.username}}
+</h2>
+<ul>
+    <li>
+        username: {{ specific_user.email }}
+    </li>
+    <li>
+        First name: {{ specific_user.profile.first_name }}
+    </li>
+    <li>
+        Last name: {{ specific_user.profile.last_name }}
+    </li>
+    <li>
+        Date joined: {{ specific_user.time_stamp }}
+    </li>
+    <li>
+        Member of organizations: 
+        {% for o in specific_user.orgs.all %}
+        <a href="{% url 'organizations:specific_org' org_slug=o.org_slug %}">{{ o.name }}
+        </a>        
+        {% endfor %}
+    </li>
+    <li>
+        Biography: {{ specific_user.profile.bio }}
+    </li>
+   <li>
+       Badge: {{ specific_user.profile.get_member_badge_display}}
+   </li>
+   
+    
+</ul>
+
+<a href="update/">Update Profile</a>
+
+<form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+
+        </style>
+        {{ form_follow.as_p }}
+        <hr>
+        <button type="submit" class="registerbtn">Follow</button>
+    </form>
+{% endblock %}

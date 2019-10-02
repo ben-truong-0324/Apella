@@ -1,0 +1,44 @@
+{% extends 'base_home.html' %}
+
+{% block breadcrumb %}
+<a href="{% url 'organizations:specific_org' org_slug=campaign.organization.org_slug %}">{{campaign.organization.name}}</a>
+<a href="{% url 'organizations:org_campaigns:campaign' org_slug=campaign.organization.org_slug campaign_slug=campaign.campaign_slug %}">{{campaign.name}}</a>
+
+{% endblock %}
+
+{% block content %}
+<h2 style="background-color: #ffdddd;
+  border-left: 6px solid #f44336;">  {{campaign.name}}
+</h2>
+
+<p>Posted date: {{ campaign.created_date|date }}</p>
+<p>Organization: {{ campaign.organization.name }} </p>
+
+    <div id="tag_label">
+    {% for tag in campaign.tags.all %}
+    <a href="#">{{ tag.name }}</a>
+    {% endfor %}
+    </div>
+
+
+
+<br>
+
+
+<p> Summary: {{ campaign.summary }}</p>
+<p>Main concerns: </p>
+<p>Why I'm affected: </p>
+
+<h2>Comments
+</h2>
+<p>Voted most relevant:</p>
+{% for p in topic.post_set.all %}
+<p>
+{{ p }}:
+{{ p.content }}
+</p>
+{% endfor %}
+<!-- <a href="{% url 'organizations:org_campaigns:share_pov' org_slug=org.org_slug campaign_slug=campaign_slug%}">Share my POV</a> -->
+
+
+{% endblock %}

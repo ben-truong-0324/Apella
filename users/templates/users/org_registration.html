@@ -1,0 +1,16 @@
+{% extends "base_home.html" %}
+{% block content %}
+<!-- Form - User -->
+<div id="register">
+
+    <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+
+        </style>
+        {{ form.as_p }}
+        <hr>
+        <button type="submit" class="registerbtn">Register Organization</button>
+        <p>You'd still need to wait for verification from your organization</p>
+    </form>
+</div>
+{% endblock content %}

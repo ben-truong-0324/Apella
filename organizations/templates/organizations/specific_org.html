@@ -1,0 +1,130 @@
+{% extends 'base_home.html' %}
+
+{% block breadcrumb %}
+<a href="{% url 'organizations:specific_org' org_slug=org.org_slug %}" >{{org.name}}</a>
+
+{% endblock %}
+
+{% block content %}
+
+<p>
+
+
+{% if request.user in org.members.all %}
+ {% else %}
+ <a href="{% url 'organizations:join' org_slug=org.org_slug %}">Join as a member</a>
+  {% endif %}
+</a>
+</p>
+
+<div class="section">
+    <div class="i1section">
+        <div class="section_header">
+            {{ org.name }}
+        </div>
+        <ul>
+           
+            <li><a href="https://localwiki.org/ ">Learn more on LocalWiki!</a>
+            </li>
+            <li>
+                <div class="add-tag-form">
+                    <form method="POST" class="post-form">{% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="save btn btn-default btn-sm">Add</button>
+                    </form>
+                </div>
+            </li>
+
+            <li>
+              <p>
+                List of members:
+  {% for m in org.members.all %}
+  <a href = "{% url 'users:user_profile' username=m.username %}">{{ m.username }}</a>
+
+        
+  {% endfor %}
+              </p>
+              {% for member in membership %}
+      <a href="{% url 'users:user_profile' username=member.user.username %}">{{member.user.username}}</a>
+    {% endfor %}
+            </li>
+        </ul>
+    </div>
+
+    <div class = "i2section">
+      <h3>Ongoing votes</h3>
+    </div>
+    <ul>
+      <li>
+  <a href="{% url 'organizations:org_campaigns:create_campaign' org_slug=org.org_slug %}">Create new campaign
+  </a>
+      </li>
+      <li>
+        {% for campaign in org.campaigns.all %}
+    <div class="outcome_columns">
+  <ul class="outcome">
+    <li class="header"><a href="{{ campaign.get_absolute_url_mod }}">{{ campaign.name }}</a>
+</li>
+    <li class="grey">Date logged: {{campaign.created_date|date }}</li>
+    <li>Ongoing: 
+      {% if campaign.active == True %} &#10004;qe
+      {% else %} &times;
+      {% endif %}</li>
+    <li>Summary: {{ campaign.summary }}</li>
+    <li>Members following: </li>
+
+  </ul>
+</div>
+
+
+    {% endfor %}
+      </li>
+    </ul>
+</div>
+
+
+
+
+<div id = "list_of_topics">
+<div class="row">
+  
+
+    {% for topic in org.organization_topics.all %}
+    <div class="outcome_columns">
+  <ul class="outcome">
+    <li class="header"><a href="{{ topic.get_absolute_url_mod }}">{{ topic.name }}</a>
+</li>
+    <li class="grey">Date logged: {{topic.created_date|date }}</li>
+    <li>Ongoing: 
+      {% if topic.active == True %} &#10004;qe
+      {% else %} &times;
+      {% endif %}</li>
+    <li>Deliberating members: </li>
+    <li>Summary: {{ topic.summary }}</li>
+    <li>Current sentiment: (pie chart of % of words from public adoped, % of words/proposals from experts/officials adopted)</li>
+    <li>Timeline: </li>
+    <li>Most recent activity: </li>
+    <li>Pros and cons</li>
+    <li class="grey"><a href="#" class="button">Do something?</a></li>
+  </ul>
+</div>
+
+
+    {% endfor %}
+    <br>
+
+
+
+</div>
+</div>
+<h3>Reminders</h3>
+<h2>Archived Campaigns</h2>
+{% for t in topic_archived %}
+{{ t.name }}
+{% endfor %}
+<h4>Activities</h4>
+<h4>List of members</h4>
+    {% for member in membership %}
+      <a href="{% url 'users:user_profile' username=member.user.username %}">{{member.user.username}}</a>
+    {% endfor %}
+{% endblock %}

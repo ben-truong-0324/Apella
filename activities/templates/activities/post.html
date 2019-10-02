@@ -1,0 +1,17 @@
+{% extends "base_organizations.html" %}
+{% block content %}
+<!-- Form - User -->
+<p>Submit your story</p>
+<div id="register">
+    
+    <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+   
+        </style>
+        {{ form.as_p }}
+        <hr>
+        <button type="submit" class="registerbtn">Register</button>
+        
+    </form>
+</div>
+{% endblock content %}

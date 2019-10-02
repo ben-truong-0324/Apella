@@ -1,0 +1,26 @@
+{% extends 'base_organizations.html' %}
+
+{% block content %}
+
+<h1>
+  How {{ org.name }} affects you:
+</h1>
+    <div id="tag_label">
+
+
+    {% for tag in org.tags.all %}
+
+    <a href="#">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="add-tag-form">
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default btn-sm">Add</button>
+        </form>
+    </div>
+
+
+<h3>Reminders</h3>
+<h3>Activities</h3>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base_home.html" %}
+{% block content %}
+<!-- Form - User -->
+<div id="register">
+
+    <form action="" method="POST" class="form-horizontal">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <hr> 
+        <button type="submit" class="registerbtn">Update Profile</button>
+    </form>
+</div>
+{% endblock content %}

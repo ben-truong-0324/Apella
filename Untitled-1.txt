@@ -1,0 +1,127 @@
+path('post/<int:pk>/', PostView.as_view(), name='post'),
+    # ex: /blog/post/create/
+    path('post/create/', PostCreate.as_view(), name='create_post'),
+    # ex: /blog/post/5/update/
+    path('post/create/<int:pk>/update', PostUpdate.as_view(), name='update_post'),
+    # ex: /blog/post/5/delete/
+    path('post/<int:pk>/delete/', PostDelete.as_view(), name='delete_post'),
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic import CreateView, UpdateView, DeleteView
+
+from blog.models.comment import Comment
+from blog.models.post import Post
+
+
+class PostView(generic.DetailView):
+    model = Post
+    template_name = 'blog/post.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the username
+        comments = Comment.objects.filter(post=self.kwargs['pk'])
+        context['comments'] = comments
+        return context
+
+
+class PostCreate(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'body']
+    template_name = 'blog/create_post.html'
+    login_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class PostUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'body']
+    template_name = 'blog/create_post.html'
+    login_url = reverse_lazy('login')
+
+    def test_func(self):
+        return Post.objects.get(id=self.kwargs['pk']).user == self.request.user
+
+
+class PostDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog:home')
+    login_url = reverse_lazy('login')
+
+    def test_func(self):
+        return Post.objects.get(id=self.kwargs['pk']).user == self.request.user
+
+
+
+
+
+
+
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+
+                <!-- Form - Blog Post -->
+                <form action="" method="post" class="form-horizontal">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+
+                            <!-- Errors - title -->
+                            {% if form.title.errors %}
+                                <label class="alert alert-danger">{{ form.title.errors }}</label>
+                            {% endif %}
+
+                            <!-- Form field - title -->
+                            <input type="text"
+                                   placeholder="Title"
+                                   class="form-control"
+                                   name="title"
+                                   value="{{ form.title.value|default:"" }}">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+
+                            <!-- Errors - body -->
+                            {% if form.body.errors %}
+                                <label class="alert alert-danger">{{ form.body.errors }}</label>
+                            {% endif %}
+
+                            <!-- Form fields - body -->
+                            <textarea placeholder="Body"
+                                      class="form-control"
+                                      name="body">{{ form.body.value|default:"" }}</textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block">Save</button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock content %}

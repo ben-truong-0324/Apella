@@ -1,0 +1,41 @@
+{% extends 'base_home.html' %}
+
+{% block breadcrumb %}
+<a href="{% url 'activities:blogs_list' %}">Blogs</a>
+<a href="{% url 'activities:specific_blog' blog_slug=blog.blog_slug %}" >{{blog.name}}</a>
+{% endblock %}
+
+{% block content %}
+<h3>{{ blog.name }}</h3>
+<p>Author: {{ blog.author }} </p>
+<div id="tag_label">
+        {% for tag in blog.tags.all %}
+        <a href="#">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    
+    <div class="add-tag-form">
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default btn-sm">Add Tag</button>
+            </form>
+        </div>
+
+<br>
+<p> {{ blog.created_on|date }} </p>
+<p> {{ blog.content}} </p>
+
+<form method="POST" class="post-form">{% csrf_token %}
+        {{ form_comment.as_p }}
+        <button type="submit" class="save btn btn-default btn-sm">Comment</button>
+    </form>
+<p>
+    dem comments:
+</p>
+{% for c in blog.blogcomment_set.all %}
+<p>
+    {{ c }}
+</p>
+{% endfor %}
+
+{% endblock %}

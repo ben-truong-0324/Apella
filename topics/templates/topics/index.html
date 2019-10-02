@@ -1,0 +1,13 @@
+{% extends 'base_topics.html' %}
+
+{% block content %}
+	<h1>Yo yo</h1>
+	<p style="font-size:69">List of affiliated topics</p>
+	<a href="{% url 'topics:register' %}">Register new topic</a>
+	
+	{% for topic in topics %}
+    <a href="{{ topic.get_absolute_url_mod }}">{{ topic.name }}</a>
+    <p>{{ topic.topic_slug }}</p>
+	{% endfor %} 
+
+{% endblock %}

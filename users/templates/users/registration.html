@@ -1,0 +1,19 @@
+{% extends "base_home.html" %}
+{% block content %}
+<!-- Form - User -->
+<div id="register">
+    
+    <form action="" method="post" class="form-horizontal">
+        {% csrf_token %}
+   
+        </style>
+        {{ form.as_p }}
+        <hr>
+        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+        <button type="submit" class="registerbtn">Register</button>
+        <div class="container signin">
+            <p>Already have an account? <a href="{% url 'users:login' %}">Log in</a>.</p>
+        </div>
+    </form>
+</div>
+{% endblock content %}

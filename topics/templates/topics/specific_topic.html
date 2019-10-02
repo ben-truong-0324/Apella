@@ -1,0 +1,118 @@
+{% extends 'base_home.html' %}
+
+{% block breadcrumb %}
+<a href="{% url 'organizations:specific_org' org_slug=topic.organization.org_slug %}">{{topic.organization.name}}</a>
+<a href="{% url 'organizations:specific_org_topics:org_topic' org_slug=topic.organization.org_slug topic_slug=topic.topic_slug %}">{{topic.name}}</a>
+
+{% endblock %}
+
+{% block content %}
+<h2 style="background-color: #ffdddd;
+  border-left: 6px solid #f44336;">  {{topic.name}}
+</h2>
+<p> 
+        I do/do not support this campaign
+</p>
+<p>Posted date: {{ topic.created_date|date }}</p>
+<p>Organization: {{ topic.organization.name }}, {{topic.organization.get_org_type_display}} </p>
+
+<p>Relevant topics: </p>
+<a href="{% url 'organizations:specific_org_tags' org_slug=topic.organization.org_slug %}">
+Learn more!</a>
+
+    <div id="tag_label">
+    {% for tag in topic.tags.all %}
+    <a href="#">{{ tag.name }}</a>
+    {% endfor %}
+    </div>
+
+<div class="add-tag-form">
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default btn-sm">Add</button>
+        </form>
+</div>
+
+
+<br>
+
+
+<h2 style="background-color: #BCD2EE;
+  border-left: 6px solid blue;">Explore the matter:</h2>
+
+<a href="explore/">Explore</a>
+<button class="collapsible">Explore</button>
+<div class="collapsible_content">
+
+ {% for post in topic.topic_explore_posts.all %}
+    <p>
+    <div class="card">
+<!--     <div class="author_chip">
+ --><!--   <img src="img_avatar.png" alt="Person" width="96" height="96">
+ -->  <a href="{% url 'users:user_profile' username=post.user.username %}">{{post.user.username}}<br/>{{post.user.user_membership.member_type}}<br/>{{post.user.usermembership_set.get_member_type_display}}
+ {{post.user.user_membership.get_member_type_display}}derb</a>
+
+<!-- </div> -->
+<p>
+    {{ post.content }}<br/>
+
+<span>
+        <button type="button" class="trans_block_btn" style="float: left; display: inline-block; background-color:red;">
+        Unlike</button>
+        <button type="button" class="trans_block_btn" style="float: right; display: inline-block; background-color:#4CAF50">Like</button>
+</span>
+</p>
+
+    
+
+</div>
+</p>
+
+{% endfor %}
+</div>
+
+<div class="add-explore-post-form">
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            <p>Add explore post here:</p>
+            {{ form_explore_post.as_p }}
+            <button type="submit" class="save btn btn-default btn-sm">Add Explore Post</button>
+        </form>
+</div>
+
+
+<p> Summary: {{ topic.summary }}</p>
+<p>Main concerns: </p>
+<p>Voices included: decision makers, constituents, professionals, etc</p>
+<p>Why I'm affected: </p>
+<p>Add in new conversations: email chains, posts, etc</p>
+<p>Add in new documents: applications, reports, etc</p>
+<h2 style="background-color: bisque;
+  border-left: 6px solid orange;">What to do:</h2>
+	<p>Vote?</p>
+	<p>Attend meeting?</p>
+	<p>Create/attend poll</p>
+	<p>Submit POV--requested?</p>
+	<p>Word cloud poll--relevant? Importance up</p>
+<h3>Reminder list: </h3>
+	<p>Upcoming events</p>
+    <p>My bookmarked</p>
+
+<h2>The POVs
+</h2>
+<p>Upload your story!</p>
+{% for p in topic.post_set.all %}
+<p>
+{{ p }}:
+{{ p.content }}
+</p>
+{% endfor %}
+<a href="share-story/">Share your story</a>
+
+<h2 style="background-color: #ffdddd;
+  border-left: 6px solid #f44336;">Proposals
+</h2>
+<a href="outcomes/">Outcomes</a>
+<p>anyone can make proposals but: depends on user reputation and title, upvotes, etc</p>
+{% endblock %}

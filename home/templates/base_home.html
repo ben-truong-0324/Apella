@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<head>
+    <title>Apella</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_home.css' %}">
+</head>
+
+<body>
+    <div class="sidenav">
+        <div id="sidenav-left">
+
+
+            <a href="/admin">Admin</a>
+            <a href="{% url 'home:index' %}"><i class="fa fa-globe"></i>Home</a>
+            <a href="{% url 'home:about' %}"><i class="fa fa-globe"></i> About</a>
+            <a href="{% url 'home:contact' %}"><i class="fa fa-envelope"></i> Contact</a>
+            <a href="{% url 'activities:blogs_list' %}">Blogs</a>
+
+            <a href="{% url 'organizations:index' %}">All organizations</a>
+
+            <a href="//facebook.com" class="facebook"><i class="fa fa-facebook"></i></a>
+            <a href="//twitter.com" class="twitter"><i class="fa fa-twitter"></i></a>
+            <a href="//google.com" class="google"><i class="fa fa-google"></i></a>
+            <a href="//linkedin.com" class="linkedin"><i class="fa fa-linkedin"></i></a>
+            <a href="//youtube.com" class="youtube"><i class="fa fa-youtube"></i></a>
+        </div>
+        <div class="progress-container" , id="sidenav-right">
+            <div class="progress-bar" id="myBar"></div>
+        </div>
+    </div>
+    <div class="main">
+        <div id="headingbar">
+        
+            <a href="/"><img src="{% static 'home/apella_logo.png' %}" alt="Apella Logo"/ style="width: auto; height: auto;max-width: 50px;max-height: 50px"> </a>
+
+            <a {% if request.resolver_match.url_name == 'index' %} class="active" {% endif %} href="{% url 'home:index' %}"><i class="fa fa-home"></i>Home</a>
+            {% block breadcrumb %}
+            {% endblock %}
+            <div id="headingbar-right" style="float:right">
+                <a {% if request.resolver_match.url_name == 'index' %}class="active" {% endif %} href="{% url 'users:index' %}">My account</a>
+
+                {% block headingbar-right %}
+                {% endblock %}
+               
+            </div>
+
+        </div>
+{% if not user.is_authenticated %}
+<div style="width:100%;">
+    <ul class="outcome">
+        <li>
+            <h3>Take your place in the Apella</h3>
+        </li>
+        <li>
+            <p>
+                Don't be left out! *pic of person looking to join Apella crowd*
+            </p>
+        </li>
+        <li>
+            <a href="{% url 'users:register' %}">Register now!</a>
+        </li>
+    </ul>
+</div>
+{% endif %}
+    
+        <!-- <div style="margin-top:120px">
+            <img src="{% static 'images/civicdx.jpeg' %}" alt="Trulli" width="500" height="333">
+        </div> -->
+
+        {% autoescape off %}
+        {% block content %}
+        {% endblock %}
+        {% endautoescape %}
+
+        
+
+    </div>
+    {% autoescape off %}
+    {% block derb %}
+    {% endblock %}
+    {% endautoescape %}
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <br>
+    <div class="footer">
+        Copyright &copy 2019 Apella, Inc.
+    </div>
+</body>
+
+</html>
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() { scrollFunction(), ProgressBarFunction() };
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+// When the user clicks on the button, scroll to the togglep of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+// When the user scrolls the page, execute myFunction 
+function ProgressBarFunction() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.getElementById("myBar").style.height = scrolled + "%";
+}
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+
+  });
+}
+</script>

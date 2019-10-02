@@ -1,0 +1,27 @@
+{% extends 'base_home.html' %}
+
+{% block content %}
+	
+
+
+	<p>My communities</p>
+	
+	{% for o in request.user.orgs.all %}
+        <a href="{% url 'organizations:specific_org' org_slug=o.org_slug %}">{{ o.name }}
+        </a>        
+        {% endfor %}
+
+
+	<p>Other groups near me</p>
+		{% for org in orgs %}
+		{% if org not in request.user.orgs.all %}
+	<a href="{{ org.get_absolute_url }}">{{ org.name }}</a>
+		{% endif %}
+		{% endfor %} 
+
+	<br>
+	<p>
+		<a href="{% url 'organizations:register' %}">Register new organization</a>
+	</p>
+
+{% endblock %}

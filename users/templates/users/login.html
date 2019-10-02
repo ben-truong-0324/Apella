@@ -1,0 +1,14 @@
+{% extends "base_home.html" %}
+{% block content %}
+
+
+
+
+<form action="" method="post" class="form-horizontal">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+    <button type="submit" class="loginbtn" value='login'>Log in</button>
+    <hr>
+</form>
+{% endblock %}
